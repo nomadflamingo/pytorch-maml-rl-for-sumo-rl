@@ -31,7 +31,9 @@ class CategoricalMLPPolicy(Policy):
         self.apply(weight_init)
 
     def forward(self, input, params=None):
+        params_was_none = False
         if params is None:
+            params_was_none = True
             params = OrderedDict(self.named_parameters())
 
         output = input

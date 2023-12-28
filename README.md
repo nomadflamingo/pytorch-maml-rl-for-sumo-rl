@@ -1,62 +1,38 @@
-# Reinforcement Learning with Model-Agnostic Meta-Learning (MAML)
+# Reinforcement Learning with Model-Agnostic Meta-Learning (MAML) for SUMO-RL
+Repository containing code for running MAML-RL algorithm for SUMO-RL environment (version 1.3.0). Also supports 2 gym classic control environments:
+* CartPole-v1
+* MountainCar-v0
 
-![HalfCheetahDir](https://raw.githubusercontent.com/tristandeleu/pytorch-maml-rl/master/_assets/halfcheetahdir.gif)
+Forked from https://github.com/tristandeleu/pytorch-maml-rl, which hasn't been updated for a long time and took some time to figure out all the dependencies and fix some bugs.
 
-Implementation of Model-Agnostic Meta-Learning (MAML) applied on Reinforcement Learning problems in Pytorch. This repository includes environments introduced in ([Duan et al., 2016](https://arxiv.org/abs/1611.02779), [Finn et al., 2017](https://arxiv.org/abs/1703.03400)): multi-armed bandits, tabular MDPs, continuous control with MuJoCo, and 2D navigation task.
+## Installation and dependencies
+Includes the .yml file with the needed conda environment. (tested on linux)
 
-## Getting started
-To avoid any conflict with your existing Python setup, and to keep this project self-contained, it is suggested to work in a virtual environment with [`virtualenv`](http://docs.python-guide.org/en/latest/dev/virtualenvs/). To install `virtualenv`:
+Essencially the most annoying requirements are:
+* python==3.9.*
+* gym==0.21.1
+* protobuf<=3.20.*
+* sumo-rl==1.3.0 (--no-deps)
+
+To install, run:
 ```
-pip install --upgrade virtualenv
-```
-Create a virtual environment, activate it and install the requirements in [`requirements.txt`](requirements.txt).
-```
-virtualenv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-#### Requirements
- - Python 3.5 or above
- - PyTorch 1.3
- - Gym 0.15
-
-## Usage
-
-#### Training
-You can use the [`train.py`](train.py) script in order to run reinforcement learning experiments with MAML. Note that by default, logs are available in [`train.py`](train.py) but **are not** saved (eg. the returns during meta-training). For example, to run the script on HalfCheetah-Vel:
-```
-python train.py --config configs/maml/halfcheetah-vel.yaml --output-folder maml-halfcheetah-vel --seed 1 --num-workers 8
+conda env create -f conda.yml
+conda activate maml
+pip install sumo-rl==1.3.0 --no-deps
 ```
 
-#### Testing
-Once you have meta-trained the policy, you can test it on the same environment using [`test.py`](test.py):
-```
-python test.py --config maml-halfcheetah-vel/config.json --policy maml-halfcheetah-vel/policy.th --output maml-halfcheetah-vel/results.npz --meta-batch-size 20 --num-batches 10  --num-workers 8
-```
+Might run for other requirements as well, but this is what I found that works.
 
-## References
-This project is, for the most part, a reproduction of the original implementation [cbfinn/maml_rl](https://github.com/cbfinn/maml_rl/) in Pytorch. These experiments are based on the paper
-> Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-Agnostic Meta-Learning for Fast Adaptation of Deep
-Networks. _International Conference on Machine Learning (ICML)_, 2017 [[ArXiv](https://arxiv.org/abs/1703.03400)]
+## Logs
+For every iteration generates a new folder that has the name of the environment and a current datetime in its name.
 
-If you want to cite this paper
-```
-@article{finn17maml,
-  author    = {Chelsea Finn and Pieter Abbeel and Sergey Levine},
-  title     = {{Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks}},
-  journal   = {International Conference on Machine Learning (ICML)},
-  year      = {2017},
-  url       = {http://arxiv.org/abs/1703.03400}
-}
-```
+This folder stores the weights for the model, the plot of the reward function graph, and the text file with all the rewards that were used to construct the graph.
 
-If you want to cite this implementation:
-```
-@misc{deleu2018mamlrl,
-  author = {Tristan Deleu},
-  title  = {{Model-Agnostic Meta-Learning for Reinforcement Learning in PyTorch}},
-  note   = {Available at: https://github.com/tristandeleu/pytorch-maml-rl},
-  year   = {2018}
-}
-```
+## Notes on the environments
+
+### sumo-rl
+To make the environment suitable for meta learning, by default, one of the 4 reward functions implemented in sumo-rl will be chosen in each task to optimize for. You can modify the .yaml config file for sumo-rl env to change it. You can also in theory add custom reward functions by adding them to `SumoEnvironmentMetaLearning` class in `sumo_rl.py` which extends the `SumoEnvironment` class from sumo-rl.
+
+
+## When implementing a new environemnt
+Refer to the original repo for more info

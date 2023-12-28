@@ -61,3 +61,18 @@ register(
     entry_point='maml_rl.envs.navigation:Navigation2DEnv',
     max_episode_steps=100
 )
+
+# SUMO-RL
+# ----------------------------------------
+register(
+    'SUMO-RL-1.3-v0',
+    entry_point='maml_rl.envs.sumo_rl:SumoEnvironmentMetaLearning',
+    kwargs={
+        'net_file': '/home/beimukvo/Documents/work/github_repos_NO_JOKES/sumo-rl/nets/2way-single-intersection/single-intersection.net.xml',
+        'route_file': '/home/beimukvo/Documents/work/github_repos_NO_JOKES/sumo-rl/nets/2way-single-intersection/single-intersection-gen.rou.xml',
+        'use_gui': False,
+        'single_agent': True,
+        'num_seconds': 900,
+        'sumo_warnings': False,
+    },
+)

@@ -29,8 +29,14 @@ class Policy(nn.Module):
         grads = torch.autograd.grad(loss, params.values(),
                                     create_graph=not first_order)
 
+        #print('loss:', loss)
         updated_params = OrderedDict()
         for (name, param), grad in zip(params.items(), grads):
             updated_params[name] = param - step_size * grad
+            #print(f"(grad) {name:<23}: Min={grad.min().item():<6.2f} Max={grad.max().item():<6.2f} Mean={grad.mean().item():<6.2f} StdDev={grad.std().item():<6.2f} Sum={param.sum().item():<6.2f}")
+
+        #for key, tensor in updated_params.items():
+            #print(f"{key:<23}: Min={tensor.min().item():<6.2f} Max={tensor.max().item():<6.2f} Mean={tensor.mean().item():<6.2f} StdDev={tensor.std().item():<6.2f} Sum={tensor.sum().item():<6.2f}")
+        #print('-'*30)
 
         return updated_params

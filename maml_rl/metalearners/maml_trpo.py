@@ -57,18 +57,20 @@ class MAMLTRPO(GradientBasedMetaLearner):
         self.first_order = first_order
 
     async def adapt(self, train_futures, first_order=None):
+        #with torch.autograd.detect_anomaly(check_nan=True):
         if first_order is None:
             first_order = self.first_order
         # Loop over the number of steps of adaptation
         params = None
+    
         for futures in train_futures:
             inner_loss = reinforce_loss(self.policy,
                                         await futures,
                                         params=params)
             params = self.policy.update_params(inner_loss,
-                                               params=params,
-                                               step_size=self.fast_lr,
-                                               first_order=first_order)
+                                            params=params,
+                                            step_size=self.fast_lr,
+                                            first_order=first_order)
         return params
 
     def hessian_vector_product(self, kl, damping=1e-2):
