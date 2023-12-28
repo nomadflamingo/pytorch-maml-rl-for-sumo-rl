@@ -33,6 +33,12 @@ This folder stores the weights for the model, the plot of the reward function gr
 ### sumo-rl
 To make the environment suitable for meta learning, by default, one of the 4 reward functions implemented in sumo-rl will be chosen in each task to optimize for. You can modify the .yaml config file for sumo-rl env to change it. You can also in theory add custom reward functions by adding them to `SumoEnvironmentMetaLearning` class in `sumo_rl.py` which extends the `SumoEnvironment` class from sumo-rl.
 
+### mountain-car
+No changes for meta learning environment. The task is always the same
+
+### cart-pole
+No changes for meta learning environment. The task is always the same
+
 
 ## When implementing a new environemnt
 Refer to the original repo for more info

@@ -88,3 +88,14 @@ register(
     order_enforce=True,
     nondeterministic=False
 )
+
+# Cart Pole
+register(
+    'CartPoleMetaLearning-v1',
+    entry_point='maml_rl.envs.cartpole:CartPoleMetaLearning',
+    order_enforce=True,
+    reward_threshold=475.0,
+    nondeterministic=False,
+    max_episode_steps=500,
+
+)
