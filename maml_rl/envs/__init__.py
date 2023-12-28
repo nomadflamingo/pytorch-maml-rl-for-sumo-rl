@@ -76,3 +76,15 @@ register(
         'sumo_warnings': False,
     },
 )
+
+# Mountain Car
+# ----------------------------------------
+register(
+    'MountainCarMetaLearning-v0',
+    entry_point='maml_rl.envs.mountain_car:MountainCarMetaLearning',
+    kwargs={'low': 0.0, 'high': 0.6},
+    max_episode_steps=200,
+    reward_threshold=-110,
+    order_enforce=True,
+    nondeterministic=False
+)

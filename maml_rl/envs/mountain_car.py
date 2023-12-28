@@ -4,7 +4,7 @@ import numpy as np
 import scipy.stats as stats
 from gym.envs.classic_control import MountainCarEnv as MountainCarEnv_
 
-class MountainCarPosEnv(MountainCarEnv_):
+class MountainCarMetaLearning(MountainCarEnv_):
     def __init__(self, low=0.0, high=0.6):
         super().__init__()
 

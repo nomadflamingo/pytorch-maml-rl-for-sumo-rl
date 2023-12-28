@@ -16,11 +16,17 @@ def create_fig(num_reward_fns, title):
         return fig, list(chain.from_iterable(axs))
 
 
-def set_titles(axs, reward_fns):
+def set_titles(axs, reward_fns, rewards_specified):
     titles = reward_fns * 2
-    for i in range(len(reward_fns)):
-        titles[i] = f'Train returns ({reward_fns[i]} task)'
-        titles[len(reward_fns) + i] = f'Valid returns ({reward_fns[i]} task)'
+    if rewards_specified:
+        for i in range(len(reward_fns)):
+            titles[i] = f'Train returns ({reward_fns[i]} task)'
+            titles[len(reward_fns) + i] = f'Valid returns ({reward_fns[i]} task)'
+    else:
+        for i in range(len(reward_fns)):
+            titles[i] = f'Train returns'
+            titles[len(reward_fns) + i] = f'Valid returns'
+
     
     for i, ax in enumerate(axs):
         ax.set_title(titles[i])

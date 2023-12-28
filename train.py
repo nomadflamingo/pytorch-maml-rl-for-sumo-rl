@@ -73,14 +73,20 @@ def main(args):
                            first_order=config['first-order'],
                            device=args.device)
 
-    reward_fns = config['reward_fns']
+    default_task = 'default_task'
+    reward_fns = config.get('reward_fns', [default_task])
+    if reward_fns == [default_task]:
+        rewards_specified = False
+    else:
+        rewards_specified = True
+        env.unwrapped.register_reward_fns(reward_fns)
+
     train_returns = {key: [] for key in reward_fns}
     valid_returns = {key: [] for key in reward_fns}
-    env.unwrapped.register_reward_fns(reward_fns)
     
     # create plots
     fig, axs = plotter.create_fig(len(reward_fns), config['env-name'])
-    plotter.set_titles(axs, reward_fns)
+    plotter.set_titles(axs, reward_fns, rewards_specified)
     lines_train, lines_valid = plotter.create_lines(axs)
     plt.show(block=False)
 
@@ -109,9 +115,19 @@ def main(args):
                     train_returns=get_returns(train_episodes[0]),
                     valid_returns=get_returns(valid_episodes))
         
-        for task, train_return, valid_return in zip(logs['tasks'], logs['train_returns'], logs['valid_returns']):
-            train_returns[task].append(train_return[0])
-            valid_returns[task].append(valid_return[0])
+        if rewards_specified:
+            for task, train_return, valid_return in zip(logs['tasks'], logs['train_returns'], logs['valid_returns']):
+                for traj_return in train_return:
+                    train_returns[task].append(traj_return)
+                for traj_return in valid_return:
+                    valid_returns[task].append(traj_return)
+        else:
+            for train_return, valid_return in zip(logs['train_returns'], logs['valid_returns']):
+                for traj_return in train_return:
+                    train_returns[default_task].append(traj_return)
+                for traj_return in valid_return:
+                    valid_returns[default_task].append(traj_return)
+
 
         # update plots and render
         plotter.set_lines_data(lines_train, train_returns, reward_fns)

@@ -1,7 +1,7 @@
 # General
 # -------
 # Name of the environment.
-env-name: "MountainCarPos-v0"
+env-name: "MountainCarMetaLearning-v0"
 
 # Additional parameters for the environment (eg. bound for task sampling).
 env-kwargs:
@@ -28,7 +28,7 @@ nonlinearity: "tanh"
 # Task-specific
 # -------------
 # Number of trajectories to sample for each task.
-fast-batch-size: 1
+fast-batch-size: 20
 
 # Number of gradient steps in the inner loop / fast adaptation.
 num-steps: 1
@@ -42,7 +42,7 @@ fast-lr: 0.1
 num-batches: 2000
 
 # Number of tasks in each batch of tasks.
-meta-batch-size: 1
+meta-batch-size: 5
 
 # TRPO-specific
 # -------------
