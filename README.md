@@ -16,7 +16,7 @@ Essencially the most annoying requirements are:
 
 To install, run:
 ```
-conda env create -f conda.yml
+conda env create -f conda_env.yml
 conda activate maml
 pip install sumo-rl==1.3.0 --no-deps
 ```
