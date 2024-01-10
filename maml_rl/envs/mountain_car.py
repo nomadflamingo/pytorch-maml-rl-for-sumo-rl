@@ -5,15 +5,15 @@ import scipy.stats as stats
 from gym.envs.classic_control import MountainCarEnv as MountainCarEnv_
 
 class MountainCarMetaLearning(MountainCarEnv_):
+
+    def register_reward_fns(self, reward_fns):
+        for subgoal in reward_fns:
+            self.subgoals.append(subgoal)
+
     def __init__(self, low=0.0, high=0.6):
         super().__init__()
 
-        if high > self.max_position:
-            print(f'Warning: clipping value of high="{high}" to "{self.max_position}", since this is the maximum allowed position in the environment')
-            high = self.max_position
-
-        self.min_goal_pos = low
-        self.max_goal_pos = high
+        self.subgoals = []
         
 
     def sample_tasks(self, num_tasks):
@@ -23,10 +23,10 @@ class MountainCarMetaLearning(MountainCarEnv_):
         # X = stats.truncnorm((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
 
         # positions = [round(x, 2) for x in X.rvs(num_tasks)]
-        tasks = [{'position': 0.5} for _ in range(num_tasks)]
-        return tasks
+        positions = random.choices(self.subgoals, k=num_tasks)
+        return positions
 
 
     def reset_task(self, task):
         self._task = task
-        self.goal_position = task['position']
+        self.goal_position = task#task['position']
